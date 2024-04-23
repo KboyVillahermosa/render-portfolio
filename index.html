@@ -14,55 +14,61 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        fetch('https://web-service-portfolio-2thj.onrender.com')
-        .then(response => response.json())
-        .then(data => {
-            const resume = data;
-            const resumeDiv = document.getElementById('resume');
+   document.addEventListener('DOMContentLoaded', () => {
+    fetch('https://web-service-portfolio-2thj.onrender.com')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const resume = data;
+        const resumeDiv = document.getElementById('resume');
 
-            resumeDiv.innerHTML = `
-                <h2>Personal Information</h2>
-                <ul>
-                    <li>Name: ${resume.Personal_Information[0].name}</li>
-                    <li>Address: ${resume.Personal_Information[0].Address}</li>
-                    <li>Contact No: ${resume.Personal_Information[0].ContactNo}</li>
-                    <li>Email: ${resume.Personal_Information[0].Email}</li>
-                    <li>Birthdate: ${resume.Personal_Information[0].Birthdate}</li>
-                    <li>Gender: ${resume.Personal_Information[0].Gender}</li>
-                </ul>
+        resumeDiv.innerHTML = `
+            <h2>Personal Information</h2>
+            <ul>
+                <li>Name: ${resume.Personal_Information[0].name}</li>
+                <li>Address: ${resume.Personal_Information[0].Address}</li>
+                <li>Contact No: ${resume.Personal_Information[0].ContactNo}</li>
+                <li>Email: ${resume.Personal_Information[0].Email}</li>
+                <li>Birthdate: ${resume.Personal_Information[0].Birthdate}</li>
+                <li>Gender: ${resume.Personal_Information[0].Gender}</li>
+            </ul>
 
-                <h2>About Me</h2>
-                <p>${resume.About_Me[0].Description}</p>
+            <h2>About Me</h2>
+            <p>${resume.About_Me[0].Description}</p>
 
-                <h2>Skills</h2>
-                <ul>
-                    ${resume.Skills.map(skill => `<li>${skill.SkillName}</li>`).join('')}
-                </ul>
+            <h2>Skills</h2>
+            <ul>
+                ${resume.Skills.map(skill => `<li>${skill.SkillName}</li>`).join('')}
+            </ul>
 
-                <h2>Work Experience</h2>
-                <ul>
-                    ${resume.Work_Experience.map(exp => `<li>${exp.Description}</li>`).join('')}
-                </ul>
+            <h2>Work Experience</h2>
+            <ul>
+                ${resume.Work_Experience.map(exp => `<li>${exp.Description}</li>`).join('')}
+            </ul>
 
-                <h2>Education</h2>
-                <ul>
-                    <li>Level: ${resume.Education[0].Level}</li>
-                    <li>Degree: ${resume.Education[0].Degree}</li>
-                    <li>School: ${resume.Education[0].School}</li>
-                    <li>Year: ${resume.Education[0].Year}</li>
-                </ul>
+            <h2>Education</h2>
+            <ul>
+                <li>Level: ${resume.Education[0].Level}</li>
+                <li>Degree: ${resume.Education[0].Degree}</li>
+                <li>School: ${resume.Education[0].School}</li>
+                <li>Year: ${resume.Education[0].Year}</li>
+            </ul>
 
-                <h2>Awards and Achievements</h2>
-                <ul>
-                    ${resume.Awards_and_Achievements.map(award => `<li>${award.Description}</li>`).join('')}
-                </ul>
-            `;
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
+            <h2>Awards and Achievements</h2>
+            <ul>
+                ${resume.Awards_and_Achievements.map(award => `<li>${award.Description}</li>`).join('')}
+            </ul>
+        `;
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error.message);
     });
+});
+
 </script>
 
 </body>
