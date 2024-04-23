@@ -3,101 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume</title>
+    <title>Portfolio</title>
 </head>
 <body>
 
-    <h1>Resume</h1>
+    <h1>Portfolio</h1>
 
-    <section id="personalInfo">
-        <h2>Personal Information</h2>
-        <ul>
-            <li><strong>Name:</strong> <span id="name"></span></li>
-            <li><strong>Address:</strong> <span id="address"></span></li>
-            <li><strong>Contact No:</strong> <span id="contactNo"></span></li>
-            <li><strong>Email:</strong> <span id="email"></span></li>
-            <li><strong>Birthdate:</strong> <span id="birthdate"></span></li>
-            <li><strong>Gender:</strong> <span id="gender"></span></li>
-        </ul>
-    </section>
-
-    <section id="aboutMe">
-        <h2>About Me</h2>
-        <p id="description"></p>
-    </section>
-
-    <section id="skills">
-        <h2>Skills</h2>
-        <ul id="skillList"></ul>
-    </section>
-
-    <section id="workExperience">
-        <h2>Work Experience</h2>
-        <ul id="workList"></ul>
-    </section>
-
-    <section id="education">
-        <h2>Education</h2>
-        <ul>
-            <li><strong>Level:</strong> <span id="level"></span></li>
-            <li><strong>Degree:</strong> <span id="degree"></span></li>
-            <li><strong>School:</strong> <span id="school"></span></li>
-            <li><strong>Year:</strong> <span id="year"></span></li>
-        </ul>
-    </section>
-
-    <section id="awardsAndAchievements">
-        <h2>Awards and Achievements</h2>
-        <ul id="awardList"></ul>
+    <section id="portfolioData">
+        <!-- Data will be populated here -->
     </section>
 
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-    fetch('http://localhost:3000/')
-        .then(response => response.json())
-        .then(data => {
-            // Populate Personal Information
-            document.getElementById('name').innerText = data.Personal_Information[0].name;
-            document.getElementById('address').innerText = data.Personal_Information[0].Address;
-            document.getElementById('contactNo').innerText = data.Personal_Information[0].ContactNo;
-            document.getElementById('email').innerText = data.Personal_Information[0].Email;
-            document.getElementById('birthdate').innerText = data.Personal_Information[0].Birthdate;
-            document.getElementById('gender').innerText = data.Personal_Information[0].Gender;
-
-            // Populate About Me
-            document.getElementById('description').innerText = data.About_Me[0].Description;
-
-            // Populate Skills
-            const skillList = document.getElementById('skillList');
-            data.Skills[0].forEach(skill => {
-                const li = document.createElement('li');
-                li.innerText = skill.SkillName;
-                skillList.appendChild(li);
-            });
-
-            // Populate Work Experience
-            const workList = document.getElementById('workList');
-            data.Work_Experience[0].forEach(work => {
-                const li = document.createElement('li');
-                li.innerText = work.Description;
-                workList.appendChild(li);
-            });
-
-            // Populate Education
-            document.getElementById('level').innerText = data.Education[0].Level;
-            document.getElementById('degree').innerText = data.Education[0].Degree;
-            document.getElementById('school').innerText = data.Education[0].School;
-            document.getElementById('year').innerText = data.Education[0].Year;
-
-            // Populate Awards and Achievements
-            const awardList = document.getElementById('awardList');
-            data.Awards_and_Achievements[0].forEach(award => {
-                const li = document.createElement('li');
-                li.innerText = award.Description;
-                awardList.appendChild(li);
-            });
+    fetch('https://web-service-portfolio-2thj.onrender.com')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
         })
-        .catch(error => console.error('Error fetching data:', error));
+        .then(data => {
+            const portfolioData = document.getElementById('portfolioData');
+
+            // Example: Displaying Personal Information
+            const personalInfo = data.Personal_Information[0];
+            const personalInfoDiv = document.createElement('div');
+            personalInfoDiv.innerHTML = `
+                <h2>Personal Information</h2>
+                <ul>
+                    <li><strong>Name:</strong> ${personalInfo.name}</li>
+                    <li><strong>Address:</strong> ${personalInfo.Address}</li>
+                    <li><strong>Contact No:</strong> ${personalInfo.ContactNo}</li>
+                    <li><strong>Email:</strong> ${personalInfo.Email}</li>
+                    <li><strong>Birthdate:</strong> ${personalInfo.Birthdate}</li>
+                    <li><strong>Gender:</strong> ${personalInfo.Gender}</li>
+                </ul>
+            `;
+            portfolioData.appendChild(personalInfoDiv);
+
+            // Example: Displaying About Me
+            const aboutMe = data.About_Me[0];
+            const aboutMeDiv = document.createElement('div');
+            aboutMeDiv.innerHTML = `
+                <h2>About Me</h2>
+                <p>${aboutMe.Description}</p>
+            `;
+            portfolioData.appendChild(aboutMeDiv);
+
+            // Continue in the same manner for other sections...
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            const errorMessage = document.createElement('p');
+            errorMessage.textContent = 'Error fetching data. Please try again later.';
+            document.body.appendChild(errorMessage);
+        });
 });
 
     </script>
