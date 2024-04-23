@@ -14,8 +14,11 @@
     </section>
 
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-    fetch('https://web-service-portfolio-2thj.onrender.com')
+    document.addEventListener('DOMContentLoaded', () => {
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    const targetUrl = 'https://web-service-portfolio-2thj.onrender.com';
+
+    fetch(proxyUrl + targetUrl)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -40,15 +43,6 @@
                 </ul>
             `;
             portfolioData.appendChild(personalInfoDiv);
-
-            // Example: Displaying About Me
-            const aboutMe = data.About_Me[0];
-            const aboutMeDiv = document.createElement('div');
-            aboutMeDiv.innerHTML = `
-                <h2>About Me</h2>
-                <p>${aboutMe.Description}</p>
-            `;
-            portfolioData.appendChild(aboutMeDiv);
 
             // Continue in the same manner for other sections...
         })
